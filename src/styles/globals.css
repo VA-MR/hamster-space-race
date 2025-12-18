@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cosmic-dark text-white font-body;
+    overflow-x: hidden;
+  }
+
+  * {
+    @apply selection:bg-cosmic-accent selection:text-white;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-xl;
+  }
+
+  .space-button {
+    @apply px-8 py-4 bg-gradient-to-r from-cosmic-accent to-cosmic-glow 
+           rounded-full font-display font-bold text-xl text-white
+           transition-all duration-300 hover:scale-105
+           shadow-lg shadow-cosmic-accent/30
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+
+  .space-button-secondary {
+    @apply px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/30
+           rounded-full font-display font-medium text-lg text-white
+           transition-all duration-300 hover:bg-white/20 hover:scale-105;
+  }
+
+  .input-cosmic {
+    @apply w-full px-6 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/20
+           rounded-xl font-body text-lg text-white placeholder-white/50
+           focus:outline-none focus:border-cosmic-accent focus:ring-2 focus:ring-cosmic-accent/30
+           transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full px-5 py-3 rounded-xl font-body text-base text-white transition-all duration-300;
+    background-color: rgba(30, 30, 60, 0.6) !important;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid rgba(93, 93, 138, 0.5);
+  }
+  
+  .input-field:-webkit-autofill,
+  .input-field:-webkit-autofill:hover,
+  .input-field:-webkit-autofill:focus {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(30, 30, 60, 0.6) inset !important;
+    box-shadow: 0 0 0 1000px rgba(30, 30, 60, 0.6) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  .input-field::placeholder {
+    color: rgba(160, 160, 232, 0.6);
+  }
+  
+  .input-field:focus {
+    outline: none;
+    background-color: rgba(30, 30, 60, 0.7) !important;
+    border-color: #ffd93d;
+    box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.2);
+  }
+
+  .tab-button {
+    @apply px-4 py-2 rounded-lg font-display font-medium text-sm
+           transition-all duration-200;
+  }
+
+  .tab-button-active {
+    @apply bg-cosmic-accent text-white shadow-lg shadow-cosmic-accent/30;
+  }
+
+  .tab-button-inactive {
+    @apply bg-cosmic-700/40 text-cosmic-200 hover:bg-cosmic-600/50 hover:text-white;
+  }
+
+  .tab-button.active {
+    @apply bg-cosmic-accent text-white shadow-lg shadow-cosmic-accent/30;
+  }
+
+  .btn-primary {
+    @apply px-8 py-4 bg-gradient-to-r from-star-gold to-star-orange
+           rounded-xl font-display font-bold text-lg text-cosmic-900
+           transition-all duration-300 hover:shadow-xl hover:shadow-star-gold/40
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none
+           disabled:bg-cosmic-600 disabled:from-cosmic-600 disabled:to-cosmic-500 disabled:text-cosmic-300;
+  }
+
+  .btn-secondary {
+    @apply px-8 py-4 bg-cosmic-700/60 backdrop-blur-sm border-2 border-cosmic-500/50
+           rounded-xl font-display font-bold text-lg text-white
+           transition-all duration-300 hover:bg-cosmic-600/60 hover:border-cosmic-400 hover:shadow-lg;
+  }
+
+  .option-button {
+    @apply w-full p-4 text-left bg-white/5 backdrop-blur-sm border-2 border-white/10
+           rounded-xl font-body text-lg text-white
+           transition-all duration-200 hover:bg-white/10 hover:border-white/30
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .option-button.correct {
+    @apply bg-cosmic-success/20 border-cosmic-success text-cosmic-success;
+  }
+
+  .option-button.wrong {
+    @apply bg-cosmic-danger/20 border-cosmic-danger;
+  }
+
+  .selection-card {
+    @apply relative p-3 rounded-xl border-2 border-transparent cursor-pointer
+           transition-all duration-200 hover:bg-white/10;
+  }
+
+  .selection-card.selected {
+    @apply border-cosmic-accent bg-cosmic-accent/20 shadow-lg shadow-cosmic-accent/20;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+
+  .text-glow-gold {
+    text-shadow: 0 0 10px rgba(252, 211, 77, 0.5), 0 0 20px rgba(252, 211, 77, 0.3);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.7);
+}
+
+/* Stars animation for background */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.stars-bg {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 230px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 50px 160px, #fff, transparent),
+    radial-gradient(2px 2px at 120px 200px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 200px 250px, #fff, transparent),
+    radial-gradient(2px 2px at 280px 220px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 350px 180px, #fff, transparent),
+    radial-gradient(2px 2px at 400px 100px, rgba(255,255,255,0.7), transparent);
+  background-repeat: repeat;
+  background-size: 450px 300px;
+  animation: stars-drift 120s linear infinite;
+}
+
+@keyframes stars-drift {
+  from { background-position: 0 0; }
+  to { background-position: 450px 300px; }
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+

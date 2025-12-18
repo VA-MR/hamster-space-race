@@ -1,0 +1,602 @@
+[
+  {
+    "id": 1,
+    "question": "What is the closest planet to the Sun?",
+    "options": ["Venus", "Mercury", "Mars", "Earth"],
+    "correctAnswer": "Mercury"
+  },
+  {
+    "id": 2,
+    "question": "How many planets are in our solar system?",
+    "options": ["7", "8", "9", "10"],
+    "correctAnswer": "8"
+  },
+  {
+    "id": 3,
+    "question": "What planet is known as the Red Planet?",
+    "options": ["Jupiter", "Saturn", "Mars", "Venus"],
+    "correctAnswer": "Mars"
+  },
+  {
+    "id": 4,
+    "question": "What is the largest planet in our solar system?",
+    "options": ["Saturn", "Neptune", "Jupiter", "Uranus"],
+    "correctAnswer": "Jupiter"
+  },
+  {
+    "id": 5,
+    "question": "What do astronauts wear in space?",
+    "options": ["Pajamas", "Space suit", "Raincoat", "Swimsuit"],
+    "correctAnswer": "Space suit"
+  },
+  {
+    "id": 6,
+    "question": "What is the name of Earth's natural satellite?",
+    "options": ["The Sun", "Mars", "The Moon", "A star"],
+    "correctAnswer": "The Moon"
+  },
+  {
+    "id": 7,
+    "question": "Which planet has beautiful rings around it?",
+    "options": ["Earth", "Mars", "Saturn", "Venus"],
+    "correctAnswer": "Saturn"
+  },
+  {
+    "id": 8,
+    "question": "What galaxy do we live in?",
+    "options": ["Andromeda", "Milky Way", "Triangulum", "Whirlpool"],
+    "correctAnswer": "Milky Way"
+  },
+  {
+    "id": 9,
+    "question": "What force keeps us on the ground?",
+    "options": ["Magnetism", "Wind", "Gravity", "Electricity"],
+    "correctAnswer": "Gravity"
+  },
+  {
+    "id": 10,
+    "question": "What is a shooting star actually made of?",
+    "options": ["Burning rock", "Stardust", "Ice cream", "Sunlight"],
+    "correctAnswer": "Burning rock"
+  },
+  {
+    "id": 11,
+    "question": "Who was the first person to walk on the Moon?",
+    "options": ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"],
+    "correctAnswer": "Neil Armstrong"
+  },
+  {
+    "id": 12,
+    "question": "What do we call a group of stars that form a pattern?",
+    "options": ["Star cluster", "Constellation", "Galaxy", "Nebula"],
+    "correctAnswer": "Constellation"
+  },
+  {
+    "id": 13,
+    "question": "Which planet is famous for its Great Red Spot?",
+    "options": ["Mars", "Jupiter", "Saturn", "Neptune"],
+    "correctAnswer": "Jupiter"
+  },
+  {
+    "id": 14,
+    "question": "What is the Sun made of?",
+    "options": ["Fire", "Lava", "Hot gases", "Liquid gold"],
+    "correctAnswer": "Hot gases"
+  },
+  {
+    "id": 15,
+    "question": "How long does it take Earth to orbit the Sun?",
+    "options": ["1 day", "1 week", "1 month", "1 year"],
+    "correctAnswer": "1 year"
+  },
+  {
+    "id": 16,
+    "question": "What causes day and night on Earth?",
+    "options": ["The Moon", "Earth spinning", "The Sun moving", "Clouds"],
+    "correctAnswer": "Earth spinning"
+  },
+  {
+    "id": 17,
+    "question": "What is the hottest planet in our solar system?",
+    "options": ["Mercury", "Venus", "Mars", "Jupiter"],
+    "correctAnswer": "Venus"
+  },
+  {
+    "id": 18,
+    "question": "What do we call a robot sent to explore other planets?",
+    "options": ["Satellite", "Rover", "Rocket", "Shuttle"],
+    "correctAnswer": "Rover"
+  },
+  {
+    "id": 19,
+    "question": "What color is Neptune?",
+    "options": ["Red", "Yellow", "Blue", "Green"],
+    "correctAnswer": "Blue"
+  },
+  {
+    "id": 20,
+    "question": "What is the center of our solar system?",
+    "options": ["Earth", "The Moon", "Jupiter", "The Sun"],
+    "correctAnswer": "The Sun"
+  },
+  {
+    "id": 21,
+    "question": "What is the smallest planet in our solar system?",
+    "options": ["Mars", "Mercury", "Pluto", "Venus"],
+    "correctAnswer": "Mercury"
+  },
+  {
+    "id": 22,
+    "question": "How many moons does Mars have?",
+    "options": ["0", "1", "2", "3"],
+    "correctAnswer": "2"
+  },
+  {
+    "id": 23,
+    "question": "What is the International Space Station?",
+    "options": ["A rocket", "A satellite", "A space laboratory", "A planet"],
+    "correctAnswer": "A space laboratory"
+  },
+  {
+    "id": 24,
+    "question": "Which planet is closest to Earth?",
+    "options": ["Mars", "Venus", "Mercury", "Jupiter"],
+    "correctAnswer": "Venus"
+  },
+  {
+    "id": 25,
+    "question": "What is the name of the force that pulls things toward planets?",
+    "options": ["Magnetism", "Gravity", "Friction", "Energy"],
+    "correctAnswer": "Gravity"
+  },
+  {
+    "id": 26,
+    "question": "What happens during a solar eclipse?",
+    "options": ["Earth blocks the Sun", "Moon blocks the Sun", "Sun disappears", "Stars appear"],
+    "correctAnswer": "Moon blocks the Sun"
+  },
+  {
+    "id": 27,
+    "question": "How many Earth days does it take the Moon to orbit Earth?",
+    "options": ["7 days", "14 days", "27 days", "30 days"],
+    "correctAnswer": "27 days"
+  },
+  {
+    "id": 28,
+    "question": "What are the outer planets mostly made of?",
+    "options": ["Rock", "Gas", "Ice", "Metal"],
+    "correctAnswer": "Gas"
+  },
+  {
+    "id": 29,
+    "question": "What is the name of Mars' largest volcano?",
+    "options": ["Mount Everest", "Olympus Mons", "Mount Fuji", "Kilimanjaro"],
+    "correctAnswer": "Olympus Mons"
+  },
+  {
+    "id": 30,
+    "question": "What spacecraft took humans to the Moon?",
+    "options": ["Space Shuttle", "Apollo", "Soyuz", "Dragon"],
+    "correctAnswer": "Apollo"
+  },
+  {
+    "id": 31,
+    "question": "What is a black hole?",
+    "options": ["A dark planet", "A collapsed star", "A hole in space", "An empty galaxy"],
+    "correctAnswer": "A collapsed star"
+  },
+  {
+    "id": 32,
+    "question": "Which planet spins on its side?",
+    "options": ["Mars", "Venus", "Uranus", "Mercury"],
+    "correctAnswer": "Uranus"
+  },
+  {
+    "id": 33,
+    "question": "What is the name of NASA's most famous space telescope?",
+    "options": ["Galileo", "Hubble", "Newton", "Einstein"],
+    "correctAnswer": "Hubble"
+  },
+  {
+    "id": 34,
+    "question": "How long does it take light from the Sun to reach Earth?",
+    "options": ["8 seconds", "8 minutes", "8 hours", "8 days"],
+    "correctAnswer": "8 minutes"
+  },
+  {
+    "id": 35,
+    "question": "What is a comet mostly made of?",
+    "options": ["Rock and fire", "Ice and dust", "Gold and silver", "Lava and gas"],
+    "correctAnswer": "Ice and dust"
+  },
+  {
+    "id": 36,
+    "question": "What is the name of the first animal sent to space?",
+    "options": ["A cat named Felix", "A dog named Laika", "A monkey named Ham", "A mouse named Mickey"],
+    "correctAnswer": "A dog named Laika"
+  },
+  {
+    "id": 37,
+    "question": "What is the Kuiper Belt?",
+    "options": ["An asteroid field", "A region beyond Neptune", "A constellation", "A type of rocket"],
+    "correctAnswer": "A region beyond Neptune"
+  },
+  {
+    "id": 38,
+    "question": "How many stars are in our solar system?",
+    "options": ["1", "2", "8", "Millions"],
+    "correctAnswer": "1"
+  },
+  {
+    "id": 39,
+    "question": "What protects Earth from harmful solar radiation?",
+    "options": ["Atmosphere", "Moon", "Clouds", "Magnetosphere"],
+    "correctAnswer": "Magnetosphere"
+  },
+  {
+    "id": 40,
+    "question": "What is the coldest planet in our solar system?",
+    "options": ["Neptune", "Uranus", "Pluto", "Saturn"],
+    "correctAnswer": "Uranus"
+  },
+  {
+    "id": 41,
+    "question": "What do we call the path a planet takes around the Sun?",
+    "options": ["Circle", "Orbit", "Route", "Journey"],
+    "correctAnswer": "Orbit"
+  },
+  {
+    "id": 42,
+    "question": "Which planet has the most moons?",
+    "options": ["Jupiter", "Saturn", "Uranus", "Neptune"],
+    "correctAnswer": "Saturn"
+  },
+  {
+    "id": 43,
+    "question": "What is the name of SpaceX's reusable rocket?",
+    "options": ["Dragon", "Falcon", "Eagle", "Phoenix"],
+    "correctAnswer": "Falcon"
+  },
+  {
+    "id": 44,
+    "question": "What causes the Northern Lights (Aurora Borealis)?",
+    "options": ["Clouds glowing", "Solar particles", "Moon reflection", "Lightning"],
+    "correctAnswer": "Solar particles"
+  },
+  {
+    "id": 45,
+    "question": "How hot is the surface of the Sun?",
+    "options": ["1,000°C", "5,500°C", "10,000°C", "1,000,000°C"],
+    "correctAnswer": "5,500°C"
+  },
+  {
+    "id": 46,
+    "question": "What is the asteroid belt located between?",
+    "options": ["Earth and Mars", "Mars and Jupiter", "Jupiter and Saturn", "Saturn and Uranus"],
+    "correctAnswer": "Mars and Jupiter"
+  },
+  {
+    "id": 47,
+    "question": "What was the first human-made object to leave our solar system?",
+    "options": ["Apollo 11", "Voyager 1", "Hubble", "Sputnik"],
+    "correctAnswer": "Voyager 1"
+  },
+  {
+    "id": 48,
+    "question": "How long is a day on Jupiter?",
+    "options": ["5 hours", "10 hours", "24 hours", "48 hours"],
+    "correctAnswer": "10 hours"
+  },
+  {
+    "id": 49,
+    "question": "What is a supernova?",
+    "options": ["A new star", "An exploding star", "A dying planet", "A bright comet"],
+    "correctAnswer": "An exploding star"
+  },
+  {
+    "id": 50,
+    "question": "What year did humans first land on the Moon?",
+    "options": ["1959", "1969", "1979", "1989"],
+    "correctAnswer": "1969"
+  },
+  {
+    "id": 51,
+    "question": "If you weigh 60 kg on Earth, what would you weigh on the Moon?",
+    "options": ["10 kg", "30 kg", "60 kg", "120 kg"],
+    "correctAnswer": "10 kg"
+  },
+  {
+    "id": 52,
+    "question": "Which planet is actually closest to Earth MOST of the time?",
+    "options": ["Venus", "Mars", "Mercury", "Jupiter"],
+    "correctAnswer": "Mercury"
+  },
+  {
+    "id": 53,
+    "question": "What happens to a cup of water in space?",
+    "options": ["It freezes", "It boils", "It floats as a blob", "It disappears"],
+    "correctAnswer": "It floats as a blob"
+  },
+  {
+    "id": 54,
+    "question": "Can you cry in space?",
+    "options": ["No, tears don't form", "Yes, but tears don't fall", "Yes, normally", "No, eyes dry out"],
+    "correctAnswer": "Yes, but tears don't fall"
+  },
+  {
+    "id": 55,
+    "question": "What color is a sunset on Mars?",
+    "options": ["Red and orange", "Blue", "Purple", "Green"],
+    "correctAnswer": "Blue"
+  },
+  {
+    "id": 56,
+    "question": "How long would it take to drive to the Moon at highway speed?",
+    "options": ["6 months", "1 year", "3 years", "6 months"],
+    "correctAnswer": "6 months"
+  },
+  {
+    "id": 57,
+    "question": "What is the Great Attractor?",
+    "options": ["A huge magnet", "A massive gravity anomaly", "A bright star", "A type of comet"],
+    "correctAnswer": "A massive gravity anomaly"
+  },
+  {
+    "id": 58,
+    "question": "Which planet rains diamonds?",
+    "options": ["Mars", "Jupiter", "Neptune", "Mercury"],
+    "correctAnswer": "Neptune"
+  },
+  {
+    "id": 59,
+    "question": "How many Earths could fit inside the Sun?",
+    "options": ["1,000", "10,000", "100,000", "1,300,000"],
+    "correctAnswer": "1,300,000"
+  },
+  {
+    "id": 60,
+    "question": "What happens to your height in space?",
+    "options": ["You shrink", "You grow taller", "No change", "You float higher"],
+    "correctAnswer": "You grow taller"
+  },
+  {
+    "id": 61,
+    "question": "I travel 300,000 km per second but can be trapped. What am I?",
+    "options": ["Sound", "Light", "Wind", "Time"],
+    "correctAnswer": "Light"
+  },
+  {
+    "id": 62,
+    "question": "What is the only planet that rotates clockwise?",
+    "options": ["Mercury", "Venus", "Mars", "Uranus"],
+    "correctAnswer": "Venus"
+  },
+  {
+    "id": 63,
+    "question": "A year on this planet is shorter than its day. Which planet?",
+    "options": ["Mercury", "Venus", "Mars", "Jupiter"],
+    "correctAnswer": "Venus"
+  },
+  {
+    "id": 64,
+    "question": "What is dark matter?",
+    "options": ["Black planets", "Invisible matter", "Burned stars", "Dark energy"],
+    "correctAnswer": "Invisible matter"
+  },
+  {
+    "id": 65,
+    "question": "How many galaxies are estimated to exist in the universe?",
+    "options": ["Millions", "Billions", "Trillions", "Infinite"],
+    "correctAnswer": "Trillions"
+  },
+  {
+    "id": 66,
+    "question": "What is the largest known star?",
+    "options": ["Betelgeuse", "Sirius", "UY Scuti", "Polaris"],
+    "correctAnswer": "UY Scuti"
+  },
+  {
+    "id": 67,
+    "question": "If you orbited a black hole, what happens to time?",
+    "options": ["Speeds up", "Slows down", "Stops", "Reverses"],
+    "correctAnswer": "Slows down"
+  },
+  {
+    "id": 68,
+    "question": "What percentage of the universe is actually visible matter?",
+    "options": ["5%", "25%", "50%", "75%"],
+    "correctAnswer": "5%"
+  },
+  {
+    "id": 69,
+    "question": "Saturn is less dense than what substance?",
+    "options": ["Ice", "Water", "Air", "Foam"],
+    "correctAnswer": "Water"
+  },
+  {
+    "id": 70,
+    "question": "What is the cosmic microwave background?",
+    "options": ["Space radiation", "Afterglow of Big Bang", "Star light", "Galaxy heat"],
+    "correctAnswer": "Afterglow of Big Bang"
+  },
+  {
+    "id": 71,
+    "question": "I appear before sunrise but am not a star. What am I?",
+    "options": ["Mars", "Venus", "Mercury", "Jupiter"],
+    "correctAnswer": "Venus"
+  },
+  {
+    "id": 72,
+    "question": "How long does it take the solar system to orbit the galaxy?",
+    "options": ["100 years", "1 million years", "225 million years", "1 billion years"],
+    "correctAnswer": "225 million years"
+  },
+  {
+    "id": 73,
+    "question": "What makes Uranus appear blue-green?",
+    "options": ["Water", "Ice", "Methane", "Nitrogen"],
+    "correctAnswer": "Methane"
+  },
+  {
+    "id": 74,
+    "question": "Where is the edge of space officially?",
+    "options": ["50 km up", "100 km up", "500 km up", "1000 km up"],
+    "correctAnswer": "100 km up"
+  },
+  {
+    "id": 75,
+    "question": "What is a pulsar?",
+    "options": ["A pulsing planet", "A rotating neutron star", "A blinking galaxy", "A comet"],
+    "correctAnswer": "A rotating neutron star"
+  },
+  {
+    "id": 76,
+    "question": "If the Sun suddenly disappeared, how long before we'd notice?",
+    "options": ["Instantly", "8 minutes", "1 hour", "1 day"],
+    "correctAnswer": "8 minutes"
+  },
+  {
+    "id": 77,
+    "question": "What is the temperature of empty space?",
+    "options": ["-270°C", "-100°C", "0°C", "It has no temperature"],
+    "correctAnswer": "-270°C"
+  },
+  {
+    "id": 78,
+    "question": "Which came first in space history?",
+    "options": ["Man on Moon", "Satellite in orbit", "Space station", "Mars rover"],
+    "correctAnswer": "Satellite in orbit"
+  },
+  {
+    "id": 79,
+    "question": "What is the fastest thing in the universe?",
+    "options": ["Light", "Neutrinos", "Gravity waves", "All travel at same speed"],
+    "correctAnswer": "All travel at same speed"
+  },
+  {
+    "id": 80,
+    "question": "How many planets have humans sent spacecraft to?",
+    "options": ["All of them", "Only inner planets", "Only Mars", "6 planets"],
+    "correctAnswer": "All of them"
+  },
+  {
+    "id": 81,
+    "question": "What is strange about neutron stars?",
+    "options": ["They're invisible", "Incredibly dense", "They float", "They glow green"],
+    "correctAnswer": "Incredibly dense"
+  },
+  {
+    "id": 82,
+    "question": "I have no atmosphere but have weather. What am I?",
+    "options": ["Moon", "Mercury", "Sun", "Asteroid"],
+    "correctAnswer": "Sun"
+  },
+  {
+    "id": 83,
+    "question": "What happens to metal in space without protection?",
+    "options": ["It melts", "It rusts", "It welds together", "It shatters"],
+    "correctAnswer": "It welds together"
+  },
+  {
+    "id": 84,
+    "question": "What is a light-year?",
+    "options": ["A year of light", "A distance", "A time period", "A brightness measure"],
+    "correctAnswer": "A distance"
+  },
+  {
+    "id": 85,
+    "question": "Which planet has the shortest year?",
+    "options": ["Mercury", "Venus", "Earth", "Mars"],
+    "correctAnswer": "Mercury"
+  },
+  {
+    "id": 86,
+    "question": "What creates a meteor shower?",
+    "options": ["Asteroid impacts", "Comet debris", "Exploding stars", "Solar wind"],
+    "correctAnswer": "Comet debris"
+  },
+  {
+    "id": 87,
+    "question": "How many times has the flag been planted on the Moon?",
+    "options": ["1", "3", "6", "12"],
+    "correctAnswer": "6"
+  },
+  {
+    "id": 88,
+    "question": "What is the Oort Cloud?",
+    "options": ["A nebula", "A comet reservoir", "A star cluster", "A gas giant"],
+    "correctAnswer": "A comet reservoir"
+  },
+  {
+    "id": 89,
+    "question": "Why can't you see stars during the day?",
+    "options": ["They hide", "Sun is too bright", "They move away", "Atmosphere blocks them"],
+    "correctAnswer": "Sun is too bright"
+  },
+  {
+    "id": 90,
+    "question": "What is special about exoplanets?",
+    "options": ["They're made of metal", "They orbit other stars", "They're all gas giants", "They have no moons"],
+    "correctAnswer": "They orbit other stars"
+  },
+  {
+    "id": 91,
+    "question": "I appear only when you look away from the Sun. What am I?",
+    "options": ["Stars", "Planets", "Comets", "The Moon"],
+    "correctAnswer": "Stars"
+  },
+  {
+    "id": 92,
+    "question": "What would happen if Earth stopped rotating?",
+    "options": ["We'd float away", "One side always faces Sun", "We'd fall into Sun", "Nothing"],
+    "correctAnswer": "One side always faces Sun"
+  },
+  {
+    "id": 93,
+    "question": "What is redshift in astronomy?",
+    "options": ["Mars appearing red", "Light from moving objects", "Sunset colors", "Red giant stars"],
+    "correctAnswer": "Light from moving objects"
+  },
+  {
+    "id": 94,
+    "question": "How many astronauts have walked on the Moon?",
+    "options": ["2", "6", "12", "24"],
+    "correctAnswer": "12"
+  },
+  {
+    "id": 95,
+    "question": "What is the habitable zone also called?",
+    "options": ["Green zone", "Life belt", "Goldilocks zone", "Safe space"],
+    "correctAnswer": "Goldilocks zone"
+  },
+  {
+    "id": 96,
+    "question": "Which spacecraft has traveled the farthest from Earth?",
+    "options": ["Apollo 11", "Voyager 1", "New Horizons", "Hubble"],
+    "correctAnswer": "Voyager 1"
+  },
+  {
+    "id": 97,
+    "question": "What is cosmic inflation?",
+    "options": ["Universe expanding", "Stars growing", "Planets inflating", "Black holes expanding"],
+    "correctAnswer": "Universe expanding"
+  },
+  {
+    "id": 98,
+    "question": "I'm the only planet not named after a god. Which am I?",
+    "options": ["Mars", "Venus", "Earth", "Neptune"],
+    "correctAnswer": "Earth"
+  },
+  {
+    "id": 99,
+    "question": "What is the furthest object visible to the naked eye?",
+    "options": ["Mars", "Saturn", "Andromeda Galaxy", "Polaris"],
+    "correctAnswer": "Andromeda Galaxy"
+  },
+  {
+    "id": 100,
+    "question": "How many sunrises do astronauts see per day on the ISS?",
+    "options": ["1", "4", "8", "16"],
+    "correctAnswer": "16"
+  }
+]
