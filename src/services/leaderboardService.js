@@ -1,63 +1,127 @@
 // Mock leaderboard service - will be replaced with Firebase later
+// For now, we persist locally so the leaderboard starts empty and grows as real players finish games.
 
-let mockLeaderboard = [
-  { id: '1', name: 'Luna', timeMs: 90000, totalQuestions: 23, correctAnswers: 23 },
-  { id: '2', name: 'Cosmo', timeMs: 120000, totalQuestions: 25, correctAnswers: 23 },
-  { id: '3', name: 'Star', timeMs: 135000, totalQuestions: 27, correctAnswers: 23 },
-  { id: '4', name: 'Nova', timeMs: 150000, totalQuestions: 29, correctAnswers: 23 },
-  { id: '5', name: 'Orbit', timeMs: 180000, totalQuestions: 31, correctAnswers: 23 },
-  { id: '6', name: 'Astro', timeMs: 195000, totalQuestions: 24, correctAnswers: 23 },
-  { id: '7', name: 'Galaxy', timeMs: 210000, totalQuestions: 26, correctAnswers: 23 },
-  { id: '8', name: 'Rocket', timeMs: 225000, totalQuestions: 28, correctAnswers: 23 },
-  { id: '9', name: 'Comet', timeMs: 240000, totalQuestions: 30, correctAnswers: 23 },
-  { id: '10', name: 'Meteor', timeMs: 255000, totalQuestions: 32, correctAnswers: 23 },
-  { id: '11', name: 'Nebula', timeMs: 270000, totalQuestions: 25, correctAnswers: 23 },
-  { id: '12', name: 'Stellar', timeMs: 285000, totalQuestions: 27, correctAnswers: 23 },
-  { id: '13', name: 'Eclipse', timeMs: 300000, totalQuestions: 29, correctAnswers: 23 },
-  { id: '14', name: 'Pulsar', timeMs: 315000, totalQuestions: 31, correctAnswers: 23 },
-  { id: '15', name: 'Quasar', timeMs: 330000, totalQuestions: 33, correctAnswers: 23 },
-  { id: '16', name: 'Saturn', timeMs: 345000, totalQuestions: 35, correctAnswers: 23 },
-  { id: '17', name: 'Jupiter', timeMs: 360000, totalQuestions: 28, correctAnswers: 23 },
-  { id: '18', name: 'Mars', timeMs: 375000, totalQuestions: 30, correctAnswers: 23 },
-  { id: '19', name: 'Venus', timeMs: 390000, totalQuestions: 32, correctAnswers: 23 },
-  { id: '20', name: 'Mercury', timeMs: 405000, totalQuestions: 34, correctAnswers: 23 },
-  { id: '21', name: 'Neptune', timeMs: 420000, totalQuestions: 36, correctAnswers: 23 },
-  { id: '22', name: 'Uranus', timeMs: 435000, totalQuestions: 38, correctAnswers: 23 },
-  { id: '23', name: 'Pluto', timeMs: 450000, totalQuestions: 40, correctAnswers: 23 },
-  { id: '24', name: 'Sirius', timeMs: 465000, totalQuestions: 42, correctAnswers: 23 },
-  { id: '25', name: 'Vega', timeMs: 480000, totalQuestions: 44, correctAnswers: 23 },
-  { id: '26', name: 'Polaris', timeMs: 495000, totalQuestions: 46, correctAnswers: 23 },
-  { id: '27', name: 'Andromeda', timeMs: 510000, totalQuestions: 48, correctAnswers: 23 },
-  { id: '28', name: 'Cassiopeia', timeMs: 525000, totalQuestions: 50, correctAnswers: 23 },
-];
+const LEADERBOARD_STORAGE_KEY = 'hamster-space-race-leaderboard-v1';
+const DEFAULT_LIMIT = 30;
+
+function hasStorage() {
+  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+}
+
+function loadFromStorage() {
+  if (!hasStorage()) return [];
+  try {
+    const raw = window.localStorage.getItem(LEADERBOARD_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveToStorage(entries) {
+  if (!hasStorage()) return;
+  try {
+    window.localStorage.setItem(LEADERBOARD_STORAGE_KEY, JSON.stringify(entries));
+  } catch {
+    // ignore write errors (storage full, private mode, etc)
+  }
+}
+
+let mockLeaderboard = loadFromStorage();
 
 // Simulate async behavior
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function getLeaderboard() {
-  await delay(300); // Simulate network delay
-  
-  // Return top 30 sorted by fastest time (time is the primary ranking factor)
-  return [...mockLeaderboard]
-    .sort((a, b) => {
-      // Sort by time (faster is better) - this is the primary ranking metric
-      return a.timeMs - b.timeMs;
-    })
-    .slice(0, 30);
+function normalizeNumber(value, fallback = 0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
 }
 
-export async function submitScore({ name, timeMs, totalQuestions, correctAnswers }) {
+function getEntryKey(entry) {
+  // Prefer stable per-run id when present.
+  if (entry?.runId) return `run:${entry.runId}`;
+  if (entry?.id) return `id:${entry.id}`;
+  // Very old/invalid entries fall back to a content-derived key.
+  return `sig:${entry?.name ?? ''}-${entry?.timeMs ?? ''}-${entry?.totalQuestions ?? ''}-${entry?.correctAnswers ?? ''}`;
+}
+
+function dedupeEntries(entries) {
+  const map = new Map();
+  for (const raw of Array.isArray(entries) ? entries : []) {
+    if (!raw) continue;
+    const entry = {
+      ...raw,
+      timeMs: normalizeNumber(raw.timeMs, 0),
+      totalQuestions: normalizeNumber(raw.totalQuestions, 23),
+      correctAnswers: normalizeNumber(raw.correctAnswers, 23),
+    };
+    const key = getEntryKey(entry);
+    const existing = map.get(key);
+    // Keep the better (faster) time if duplicates exist for the same key.
+    if (!existing || entry.timeMs < existing.timeMs) {
+      map.set(key, entry);
+    }
+  }
+  return Array.from(map.values());
+}
+
+function sortLeaderboard(entries) {
+  return [...entries].sort((a, b) => a.timeMs - b.timeMs);
+}
+
+function limitLeaderboard(entries, limit) {
+  if (limit == null) return entries;
+  const n = normalizeNumber(limit, DEFAULT_LIMIT);
+  if (n <= 0) return [];
+  return entries.slice(0, n);
+}
+
+export async function getLeaderboard({ limit = DEFAULT_LIMIT } = {}) {
+  await delay(300); // Simulate network delay
+  
+  // Return sorted leaderboard (optionally limited)
+  const deduped = dedupeEntries(mockLeaderboard);
+  return limitLeaderboard(sortLeaderboard(deduped), limit);
+}
+
+export async function submitScore({ runId, name, timeMs, totalQuestions, correctAnswers }) {
   await delay(200); // Simulate network delay
   
+  const stableId = runId || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   const newEntry = {
-    id: Date.now().toString(),
+    // Use runId as the primary key so re-submits of the same run are idempotent.
+    id: stableId,
+    runId: stableId,
     name,
-    timeMs,
-    totalQuestions: totalQuestions || 23,
-    correctAnswers: correctAnswers || 23,
+    timeMs: normalizeNumber(timeMs, 0),
+    totalQuestions: normalizeNumber(totalQuestions, 23),
+    correctAnswers: normalizeNumber(correctAnswers, 23),
   };
   
-  mockLeaderboard.push(newEntry);
+  // Replace existing entry for this runId (idempotent), otherwise append.
+  const existingIndex = mockLeaderboard.findIndex((e) => (e?.runId || e?.id) === stableId);
+  if (existingIndex >= 0) {
+    mockLeaderboard[existingIndex] = newEntry;
+  } else {
+    // Extra safety: if the previous code submitted multiple times without runId,
+    // we can remove near-identical duplicates for this same player/run payload.
+    mockLeaderboard = mockLeaderboard.filter((e) => {
+      if (!e) return false;
+      if (e.name !== newEntry.name) return true;
+      if (normalizeNumber(e.totalQuestions, 23) !== newEntry.totalQuestions) return true;
+      if (normalizeNumber(e.correctAnswers, 23) !== newEntry.correctAnswers) return true;
+      // Treat as duplicate if time is extremely close (within 2s).
+      const dt = Math.abs(normalizeNumber(e.timeMs, 0) - newEntry.timeMs);
+      return dt > 2000;
+    });
+    mockLeaderboard.push(newEntry);
+  }
+
+  // Normalize/dedupe stored data so we don't carry forward historical duplicates.
+  mockLeaderboard = dedupeEntries(mockLeaderboard);
+  saveToStorage(mockLeaderboard);
   
   // Return the updated leaderboard
   return getLeaderboard();
@@ -84,12 +148,16 @@ export function formatQuestions(totalQuestions) {
   return `${totalQuestions} Q`;
 }
 
-export function getRank(timeMs, leaderboard, totalQuestions) {
+export function getRank(timeMs, leaderboard) {
   // Sort using the same logic as getLeaderboard
   const sorted = [...leaderboard].sort((a, b) => {
     // Sort by time (faster is better) - this is the primary ranking metric
     return a.timeMs - b.timeMs;
   });
+
+  if (sorted.length === 0) {
+    return { rank: 1, total: 0, percentile: 100 };
+  }
   
   // Find rank based on time (primary ranking factor)
   const betterCount = sorted.filter((entry) => {
@@ -99,8 +167,9 @@ export function getRank(timeMs, leaderboard, totalQuestions) {
   
   return {
     rank: betterCount + 1,
-    total: sorted.length,
-    percentile: Math.round(((sorted.length - betterCount) / sorted.length) * 100),
+    // Include the current player in the total even if they are not in the returned leaderboard subset.
+    total: Math.max(sorted.length, betterCount + 1),
+    percentile: Math.round(((Math.max(sorted.length, betterCount + 1) - betterCount) / Math.max(sorted.length, betterCount + 1)) * 100),
   };
 }
 

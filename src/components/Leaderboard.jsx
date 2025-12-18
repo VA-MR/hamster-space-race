@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getLeaderboard, formatAccuracy, formatQuestions, formatTimeMs } from '../services/leaderboardService';
 
-export default function Leaderboard({ highlightName = null, className = '' }) {
+export default function Leaderboard({ highlightName = null, highlightRunId = null, className = '' }) {
   const [entries, setEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -65,7 +65,8 @@ export default function Leaderboard({ highlightName = null, className = '' }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: Math.min(index * 0.05, 1) }}
                 className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                  entry.name === highlightName
+                  (highlightRunId && (entry.runId === highlightRunId || entry.id === highlightRunId)) ||
+                  (!highlightRunId && entry.name === highlightName)
                     ? 'bg-cosmic-accent/30 border border-cosmic-accent'
                     : 'bg-white/5 hover:bg-white/10'
                 }`}
@@ -75,7 +76,8 @@ export default function Leaderboard({ highlightName = null, className = '' }) {
                 </span>
                 <span className="flex-1 font-display font-medium truncate">
                   {entry.name}
-                  {entry.name === highlightName && (
+                  {((highlightRunId && (entry.runId === highlightRunId || entry.id === highlightRunId)) ||
+                    (!highlightRunId && entry.name === highlightName)) && (
                     <span className="ml-2 text-xs text-cosmic-star">(You!)</span>
                   )}
                 </span>
@@ -121,7 +123,7 @@ export default function Leaderboard({ highlightName = null, className = '' }) {
             <span className="font-display font-bold text-lg flex items-center gap-2">
               🏆 Leaderboard
             </span>
-            {entries.length > 0 && !isLoading && (
+            {!isLoading && (
               <span className="text-xs text-white/60 font-mono">
                 ({entries.length})
               </span>
@@ -157,7 +159,7 @@ export default function Leaderboard({ highlightName = null, className = '' }) {
         <h3 className="font-display font-bold text-lg flex items-center gap-2">
           🏆 Leaderboard
         </h3>
-        {entries.length > 0 && !isLoading && (
+        {!isLoading && (
           <span className="text-xs text-white/60 font-mono">
             {entries.length} racer{entries.length !== 1 ? 's' : ''}
           </span>
