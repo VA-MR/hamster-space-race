@@ -18,21 +18,13 @@ export default function QuizCard({ question, questionNumber, onCorrect, onWrong 
       // Small delay before moving to next question
       setTimeout(() => {
         onCorrect();
-        resetState();
       }, 800);
     } else {
       // Wrong answer - move to different question after feedback
       setTimeout(() => {
         onWrong();
-        resetState();
       }, 800);
     }
-  };
-
-  const resetState = () => {
-    setSelectedAnswer(null);
-    setIsCorrect(null);
-    setIsLocked(false);
   };
 
   const getButtonClasses = (option) => {
@@ -61,7 +53,7 @@ export default function QuizCard({ question, questionNumber, onCorrect, onWrong 
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.95 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
       >
         {/* Question Number Badge */}
         <div className="flex justify-between items-start mb-4">

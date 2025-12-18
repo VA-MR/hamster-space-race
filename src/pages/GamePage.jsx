@@ -44,8 +44,8 @@ export default function GamePage() {
   const [isHamsterMoving, setIsHamsterMoving] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(true);
 
-  // Audio hooks
-  const backgroundMusic = useAudio('/assets/audio/cosmic-gameplay-playful-twist.wav', false);
+  // Audio hooks - background music should loop
+  const backgroundMusic = useAudio('/assets/audio/cosmic-gameplay-playful-twist.wav', true);
   const victorySound = useAudio('/assets/audio/mission-complete.wav', false);
   
   // Shuffle all questions on mount
@@ -62,21 +62,33 @@ export default function GamePage() {
 
   // Start background music when page loads with lower volume
   useEffect(() => {
-    backgroundMusic.setVolume(0.3); // Set volume to 30%
-    backgroundMusic.play();
+    // Use refs to avoid dependency issues
+    const music = backgroundMusic;
+    music.setVolume(0.3); // Set volume to 30%
+    
+    // Delay play slightly to ensure audio context is initialized
+    const playTimer = setTimeout(() => {
+      music.play().catch(err => {
+        console.warn('Background music play failed:', err);
+      });
+    }, 300);
     
     return () => {
-      backgroundMusic.stop();
+      clearTimeout(playTimer);
+      // Don't stop music on cleanup - let it continue playing
     };
-  }, [backgroundMusic]);
+  }, []); // Empty deps - only run on mount
 
-  // Stop background music when game completes and set victory sound volume
+  // Handle game completion when step reaches MAX_STEPS
   useEffect(() => {
     if (currentStep >= MAX_STEPS) {
+      // Game complete!
       backgroundMusic.stop();
       victorySound.setVolume(0.4); // Set victory sound volume to 40%
+      victorySound.play();
+      setTimeout(handleGameComplete, 800);
     }
-  }, [currentStep, backgroundMusic, victorySound]);
+  }, [currentStep, backgroundMusic, victorySound, handleGameComplete]);
 
   // Handle game completion
   const handleGameComplete = useCallback(async () => {
@@ -109,19 +121,19 @@ export default function GamePage() {
     setIsHamsterMoving(true);
     setTimeout(() => setIsHamsterMoving(false), 500);
 
-    const newStep = currentStep + 1;
-    setCurrentStep(newStep);
-
-    if (newStep >= MAX_STEPS) {
-      // Game complete!
-      victorySound.play();
-      setTimeout(handleGameComplete, 800);
-    } else {
-      // Next question
-      setCurrentQuestionIndex((prev) => prev + 1);
-      setTotalQuestionsAsked((prev) => prev + 1);
-    }
-  }, [currentStep, incrementScore, incrementTotalQuestions, handleGameComplete]);
+    // Update step and question index together for smooth progression
+    setCurrentStep((prevStep) => {
+      const newStep = prevStep + 1;
+      
+      // Update question index only if not completing the game
+      if (newStep < MAX_STEPS) {
+        setCurrentQuestionIndex((prev) => prev + 1);
+        setTotalQuestionsAsked((prev) => prev + 1);
+      }
+      
+      return newStep;
+    });
+  }, [incrementScore, incrementTotalQuestions]);
 
   const handleWrongAnswer = useCallback(() => {
     incrementTotalQuestions();
@@ -146,7 +158,8 @@ export default function GamePage() {
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-cosmic-dark via-cosmic-purple to-cosmic-blue" />
-      <StarField count={60} />
+      {/* Reduce star count on mobile for better performance */}
+      <StarField count={typeof window !== 'undefined' && window.innerWidth < 768 ? 30 : 60} />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-4 min-h-screen flex flex-col">

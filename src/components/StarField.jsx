@@ -2,6 +2,10 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 export default function StarField({ count = 100 }) {
+  const isMobile = useMemo(() => {
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  }, []);
+
   const stars = useMemo(() => {
     return Array.from({ length: count }).map((_, i) => ({
       id: i,
@@ -12,6 +16,10 @@ export default function StarField({ count = 100 }) {
       duration: Math.random() * 2 + 2,
     }));
   }, [count]);
+
+  // Reduce decorative elements on mobile
+  const showShootingStars = !isMobile || count > 30;
+  const showSatellites = !isMobile;
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -24,6 +32,8 @@ export default function StarField({ count = 100 }) {
             top: `${star.y}%`,
             width: star.size,
             height: star.size,
+            willChange: 'opacity, transform', // Performance hint for browser
+            transform: 'translateZ(0)', // Force hardware acceleration
           }}
           animate={{
             opacity: [0.2, 1, 0.2],
@@ -38,142 +48,92 @@ export default function StarField({ count = 100 }) {
         />
       ))}
 
-      {/* Shooting stars / Comets */}
-      <motion.div
-        className="absolute w-1 h-1 bg-white rounded-full"
-        style={{ top: '20%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          y: ['0vh', '30vh'],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          repeatDelay: 8,
-          ease: 'easeOut',
-        }}
-      >
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-20 h-0.5 bg-gradient-to-l from-transparent to-white opacity-50" />
-      </motion.div>
+      {/* Shooting stars / Comets - reduced on mobile for performance */}
+      {showShootingStars && (
+        <>
+          <motion.div
+            className="absolute w-1 h-1 bg-white rounded-full"
+            style={{ top: '20%', left: '-5%', willChange: 'transform, opacity' }}
+            animate={{
+              x: ['0vw', '110vw'],
+              y: ['0vh', '30vh'],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 8,
+              ease: 'easeOut',
+            }}
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-20 h-0.5 bg-gradient-to-l from-transparent to-white opacity-50" />
+          </motion.div>
 
-      <motion.div
-        className="absolute w-1 h-1 bg-white rounded-full"
-        style={{ top: '60%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          y: ['0vh', '20vh'],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          repeatDelay: 12,
-          delay: 5,
-          ease: 'easeOut',
-        }}
-      >
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-0.5 bg-gradient-to-l from-transparent to-white opacity-50" />
-      </motion.div>
+          <motion.div
+            className="absolute w-1 h-1 bg-white rounded-full"
+            style={{ top: '60%', left: '-5%', willChange: 'transform, opacity' }}
+            animate={{
+              x: ['0vw', '110vw'],
+              y: ['0vh', '20vh'],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatDelay: 12,
+              delay: 5,
+              ease: 'easeOut',
+            }}
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-0.5 bg-gradient-to-l from-transparent to-white opacity-50" />
+          </motion.div>
+        </>
+      )}
 
-      <motion.div
-        className="absolute w-1 h-1 bg-white rounded-full"
-        style={{ top: '40%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          y: ['0vh', '25vh'],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 1.8,
-          repeat: Infinity,
-          repeatDelay: 10,
-          delay: 3,
-          ease: 'easeOut',
-        }}
-      >
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-0.5 bg-gradient-to-l from-transparent to-white opacity-50" />
-      </motion.div>
+      {/* Satellites - desktop only for performance */}
+      {showSatellites && (
+        <>
+          <motion.div
+            className="absolute text-2xl"
+            style={{ top: '30%', left: '-5%', willChange: 'transform, opacity' }}
+            animate={{
+              x: ['0vw', '110vw'],
+              rotate: [0, 360],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              x: { duration: 4, ease: 'linear' },
+              rotate: { duration: 4, ease: 'linear' },
+              opacity: { duration: 4 },
+              repeat: Infinity,
+              repeatDelay: 12,
+              delay: 2,
+            }}
+          >
+            🛰️
+          </motion.div>
 
-      <motion.div
-        className="absolute w-1 h-1 bg-white rounded-full"
-        style={{ top: '15%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          y: ['0vh', '35vh'],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 2.5,
-          repeat: Infinity,
-          repeatDelay: 15,
-          delay: 7,
-          ease: 'easeOut',
-        }}
-      >
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-20 h-0.5 bg-gradient-to-l from-transparent to-white opacity-50" />
-      </motion.div>
-
-      {/* Satellites */}
-      <motion.div
-        className="absolute text-2xl"
-        style={{ top: '30%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          rotate: [0, 360],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          x: { duration: 4, ease: 'linear' },
-          rotate: { duration: 4, ease: 'linear' },
-          opacity: { duration: 4 },
-          repeat: Infinity,
-          repeatDelay: 12,
-          delay: 2,
-        }}
-      >
-        🛰️
-      </motion.div>
-
-      <motion.div
-        className="absolute text-2xl"
-        style={{ top: '70%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          rotate: [0, 360],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          x: { duration: 5, ease: 'linear' },
-          rotate: { duration: 5, ease: 'linear' },
-          opacity: { duration: 5 },
-          repeat: Infinity,
-          repeatDelay: 18,
-          delay: 8,
-        }}
-      >
-        🛰️
-      </motion.div>
-
-      <motion.div
-        className="absolute text-2xl"
-        style={{ top: '50%', left: '-5%' }}
-        animate={{
-          x: ['0vw', '110vw'],
-          rotate: [0, 360],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          x: { duration: 3.5, ease: 'linear' },
-          rotate: { duration: 3.5, ease: 'linear' },
-          opacity: { duration: 3.5 },
-          repeat: Infinity,
-          repeatDelay: 15,
-          delay: 5,
-        }}
-      >
-        🛰️
-      </motion.div>
+          <motion.div
+            className="absolute text-2xl"
+            style={{ top: '70%', left: '-5%', willChange: 'transform, opacity' }}
+            animate={{
+              x: ['0vw', '110vw'],
+              rotate: [0, 360],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              x: { duration: 5, ease: 'linear' },
+              rotate: { duration: 5, ease: 'linear' },
+              opacity: { duration: 5 },
+              repeat: Infinity,
+              repeatDelay: 18,
+              delay: 8,
+            }}
+          >
+            🛰️
+          </motion.div>
+        </>
+      )}
     </div>
   );
 }
