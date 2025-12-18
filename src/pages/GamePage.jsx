@@ -79,17 +79,6 @@ export default function GamePage() {
     };
   }, []); // Empty deps - only run on mount
 
-  // Handle game completion when step reaches MAX_STEPS
-  useEffect(() => {
-    if (currentStep >= MAX_STEPS) {
-      // Game complete!
-      backgroundMusic.stop();
-      victorySound.setVolume(0.4); // Set victory sound volume to 40%
-      victorySound.play();
-      setTimeout(handleGameComplete, 800);
-    }
-  }, [currentStep, backgroundMusic, victorySound, handleGameComplete]);
-
   // Handle game completion
   const handleGameComplete = useCallback(async () => {
     endGame();
@@ -112,6 +101,17 @@ export default function GamePage() {
     // Navigate to results
     navigate('/results');
   }, [endGame, gameStats.startTime, gameStats.totalQuestions, gameStats.score, playerName, navigate]);
+
+  // Handle game completion when step reaches MAX_STEPS
+  useEffect(() => {
+    if (currentStep >= MAX_STEPS) {
+      // Game complete!
+      backgroundMusic.stop();
+      victorySound.setVolume(0.4); // Set victory sound volume to 40%
+      victorySound.play();
+      setTimeout(handleGameComplete, 800);
+    }
+  }, [currentStep, backgroundMusic, victorySound, handleGameComplete]);
 
   const handleCorrectAnswer = useCallback(() => {
     incrementScore();

@@ -1,10 +1,58 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function QuizCard({ question, questionNumber, onCorrect, onWrong }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
+
+  const timersRef = useRef({ primary: null, fallback: null });
+  const didAdvanceRef = useRef(false);
+  const pendingCorrectRef = useRef(null);
+
+  const clearTimers = useCallback(() => {
+    const { primary, fallback } = timersRef.current;
+    if (primary) clearTimeout(primary);
+    if (fallback) clearTimeout(fallback);
+    timersRef.current.primary = null;
+    timersRef.current.fallback = null;
+  }, []);
+
+  const advanceNow = useCallback(() => {
+    if (didAdvanceRef.current) return;
+    didAdvanceRef.current = true;
+    clearTimers();
+
+    const correct = pendingCorrectRef.current === true;
+    const fn = correct ? onCorrect : onWrong;
+
+    if (typeof fn !== 'function') {
+      // If callbacks are missing for any reason, don't strand the UI in a locked state.
+      console.error('QuizCard: missing advance callback', { correct });
+      setIsLocked(false);
+      return;
+    }
+
+    try {
+      fn();
+    } catch (e) {
+      console.error('QuizCard: advance callback threw', e);
+      setIsLocked(false);
+    }
+  }, [clearTimers, onCorrect, onWrong]);
+
+  // Reset local state whenever the question changes (also guarantees we don't carry a locked state forward).
+  useEffect(() => {
+    clearTimers();
+    didAdvanceRef.current = false;
+    pendingCorrectRef.current = null;
+    setSelectedAnswer(null);
+    setIsCorrect(null);
+    setIsLocked(false);
+  }, [question?.id, clearTimers]);
+
+  // Cleanup on unmount
+  useEffect(() => clearTimers, [clearTimers]);
 
   const handleAnswer = (answer) => {
     if (isLocked) return;
@@ -13,18 +61,15 @@ export default function QuizCard({ question, questionNumber, onCorrect, onWrong 
     const correct = answer === question.correctAnswer;
     setIsCorrect(correct);
     setIsLocked(true);
+    pendingCorrectRef.current = correct;
+    didAdvanceRef.current = false;
     
-    if (correct) {
-      // Small delay before moving to next question
-      setTimeout(() => {
-        onCorrect();
-      }, 800);
-    } else {
-      // Wrong answer - move to different question after feedback
-      setTimeout(() => {
-        onWrong();
-      }, 800);
-    }
+    // Small delay before moving to next question (keeps the feedback visible).
+    // In production on some devices/browsers, timer callbacks can be flaky; add a
+    // secondary fallback so we never strand the player on a locked question.
+    clearTimers();
+    timersRef.current.primary = setTimeout(advanceNow, 800);
+    timersRef.current.fallback = setTimeout(advanceNow, 1800);
   };
 
   const getButtonClasses = (option) => {
@@ -140,6 +185,19 @@ export default function QuizCard({ question, questionNumber, onCorrect, onWrong 
             </motion.p>
           )}
         </AnimatePresence>
+
+        {/* Manual fallback control (covers cases where the timer callback fails) */}
+        {isLocked && (
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={advanceNow}
+              className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 font-display text-white/90 hover:text-white transition-all"
+            >
+              Next question →
+            </button>
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
