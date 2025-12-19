@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Fisher-Yates shuffle
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export default function QuizCard({ question, questionNumber, onCorrect, onWrong }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState([]);
 
   const timersRef = useRef({ primary: null, fallback: null });
   const didAdvanceRef = useRef(false);
@@ -49,6 +60,11 @@ export default function QuizCard({ question, questionNumber, onCorrect, onWrong 
     setSelectedAnswer(null);
     setIsCorrect(null);
     setIsLocked(false);
+    
+    // Shuffle answer options for the new question
+    if (question?.options) {
+      setShuffledOptions(shuffleArray(question.options));
+    }
   }, [question?.id, clearTimers]);
 
   // Cleanup on unmount
@@ -123,9 +139,9 @@ export default function QuizCard({ question, questionNumber, onCorrect, onWrong 
 
         {/* Answer Options */}
         <div className="grid gap-3">
-          {question.options.map((option, index) => (
+          {shuffledOptions.map((option, index) => (
             <motion.button
-              key={`${question.id}-${index}`}
+              key={`${question.id}-${option}`}
               className={getButtonClasses(option)}
               onClick={() => handleAnswer(option)}
               disabled={isLocked}

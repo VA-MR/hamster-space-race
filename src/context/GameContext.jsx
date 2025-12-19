@@ -2,6 +2,14 @@ import { createContext, useContext, useState, useCallback } from 'react';
 
 const GameContext = createContext(null);
 
+function generateRunId() {
+  // Prefer crypto.randomUUID when available; fallback to time+random.
+  if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
 const initialState = {
   playerName: '',
   hamsterConfig: {
@@ -9,6 +17,7 @@ const initialState = {
     accessory: null,
   },
   gameStats: {
+    runId: null,
     score: 0,
     totalQuestions: 0,
     startTime: null,
@@ -34,6 +43,7 @@ export function GameProvider({ children }) {
 
   const startGame = useCallback(() => {
     setGameStats({
+      runId: generateRunId(),
       score: 0,
       totalQuestions: 0,
       startTime: Date.now(),

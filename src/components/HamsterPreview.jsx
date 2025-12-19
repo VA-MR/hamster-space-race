@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const hamsterImages = {
@@ -30,6 +31,8 @@ const accessoryEmojis = {
 
 export default function HamsterPreview({ config, size = 'md', animate = false, showEquipped = true }) {
   const { color, accessory } = config;
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   const sizeClasses = {
     sm: 'w-24 h-24',
@@ -55,12 +58,32 @@ export default function HamsterPreview({ config, size = 'md', animate = false, s
     >
       {/* Hamster Image Container */}
       <div className="relative w-full h-full rounded-full overflow-hidden bg-cosmic-700/50 border-4 border-cosmic-500/50 shadow-lg shadow-cosmic-500/20">
-        {imageSrc ? (
-          <img 
-            src={imageSrc} 
-            alt={`${color} hamster`}
-            className="w-full h-full object-cover object-top"
-          />
+        {imageSrc && !imageError ? (
+          <>
+            {/* Loading spinner */}
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                  className="text-3xl"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                >
+                  🐹
+                </motion.div>
+              </div>
+            )}
+            <img 
+              src={imageSrc} 
+              alt={`${color} hamster`}
+              className={`w-full h-full object-cover object-top transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                console.error(`Failed to load hamster image: ${imageSrc}`);
+                setImageError(true);
+              }}
+              loading="lazy"
+            />
+          </>
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <span className="text-4xl">🐹</span>

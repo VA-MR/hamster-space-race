@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../context/GameContext';
@@ -43,6 +43,9 @@ export default function GamePage() {
   const [totalQuestionsAsked, setTotalQuestionsAsked] = useState(1);
   const [isHamsterMoving, setIsHamsterMoving] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(true);
+  const hasTriggeredCompletionRef = useRef(false);
+  const completionTimeoutRef = useRef(null);
+  const handleGameCompleteRef = useRef(null);
 
   // Audio hooks - background music should loop
   const backgroundMusic = useAudio('/assets/audio/cosmic-gameplay-playful-twist.wav', true);
@@ -84,11 +87,12 @@ export default function GamePage() {
     endGame();
     
     // Calculate final time
-    const finalTime = Date.now() - gameStats.startTime;
+    const finalTime = gameStats.startTime ? (Date.now() - gameStats.startTime) : elapsedMs;
     
     // Submit score to leaderboard
     try {
       await submitScore({
+        runId: gameStats.runId || undefined,
         name: playerName,
         timeMs: finalTime,
         totalQuestions: gameStats.totalQuestions,
@@ -100,18 +104,36 @@ export default function GamePage() {
     
     // Navigate to results
     navigate('/results');
-  }, [endGame, gameStats.startTime, gameStats.totalQuestions, gameStats.score, playerName, navigate]);
+  }, [endGame, gameStats.runId, gameStats.startTime, gameStats.totalQuestions, gameStats.score, playerName, navigate, elapsedMs]);
+
+  // Keep latest callback in a ref so completion effect can be stable
+  useEffect(() => {
+    handleGameCompleteRef.current = handleGameComplete;
+  }, [handleGameComplete]);
 
   // Handle game completion when step reaches MAX_STEPS
   useEffect(() => {
     if (currentStep >= MAX_STEPS) {
+      if (hasTriggeredCompletionRef.current) return;
+      hasTriggeredCompletionRef.current = true;
       // Game complete!
       backgroundMusic.stop();
       victorySound.setVolume(0.4); // Set victory sound volume to 40%
       victorySound.play();
-      setTimeout(handleGameComplete, 800);
+      completionTimeoutRef.current = setTimeout(() => {
+        handleGameCompleteRef.current?.();
+      }, 800);
     }
-  }, [currentStep, backgroundMusic, victorySound, handleGameComplete]);
+    return () => {
+      if (completionTimeoutRef.current) {
+        clearTimeout(completionTimeoutRef.current);
+        completionTimeoutRef.current = null;
+      }
+    };
+    // Intentionally omit backgroundMusic/victorySound from deps:
+    // useAudio() returns a new object each render, which would retrigger this effect
+    // and cause multiple score submissions.
+  }, [currentStep]);
 
   const handleCorrectAnswer = useCallback(() => {
     incrementScore();

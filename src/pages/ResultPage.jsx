@@ -84,17 +84,21 @@ export default function ResultPage() {
     return () => {
       celebrationMusic.stop();
     };
-  }, [playerName, celebrationMusic]);
+  }, [playerName]); // Only depend on playerName, not the celebrationMusic object
 
   // Fire confetti on mount
   useEffect(() => {
     if (!playerName) return;
 
+    // Detect mobile for reduced confetti
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const particleCount = isMobile ? 50 : 100; // Reduce particles on mobile
+
     // Initial burst
     const fireConfetti = () => {
       // Left side
       confetti({
-        particleCount: 100,
+        particleCount: particleCount,
         spread: 70,
         origin: { x: 0.1, y: 0.6 },
         colors: ['#FFD93D', '#FF6B9D', '#6B8BFF', '#4ADE80', '#C06BC7'],
@@ -102,7 +106,7 @@ export default function ResultPage() {
       
       // Right side
       confetti({
-        particleCount: 100,
+        particleCount: particleCount,
         spread: 70,
         origin: { x: 0.9, y: 0.6 },
         colors: ['#FFD93D', '#FF6B9D', '#6B8BFF', '#4ADE80', '#C06BC7'],
@@ -112,25 +116,25 @@ export default function ResultPage() {
     // Fire immediately
     fireConfetti();
     
-    // Fire again after a short delay
-    const timeout1 = setTimeout(fireConfetti, 500);
+    // Fire again after a short delay (skip on mobile for performance)
+    const timeout1 = !isMobile ? setTimeout(fireConfetti, 500) : null;
     const timeout2 = setTimeout(fireConfetti, 1000);
 
     // Star shower
     const starShower = setTimeout(() => {
       confetti({
-        particleCount: 50,
+        particleCount: isMobile ? 25 : 50,
         spread: 100,
         origin: { x: 0.5, y: 0 },
         gravity: 0.5,
-        ticks: 300,
+        ticks: isMobile ? 200 : 300,
         shapes: ['star'],
         colors: ['#FFD93D', '#FFAB4A'],
       });
     }, 1500);
 
     return () => {
-      clearTimeout(timeout1);
+      if (timeout1) clearTimeout(timeout1);
       clearTimeout(timeout2);
       clearTimeout(starShower);
     };
@@ -140,12 +144,12 @@ export default function ResultPage() {
   useEffect(() => {
     if (totalTime > 0) {
       // Fetch leaderboard and calculate rank
-      getLeaderboard().then((leaderboardData) => {
-        const rank = getRank(totalTime, leaderboardData, gameStats.totalQuestions);
+      getLeaderboard({ limit: null }).then((leaderboardData) => {
+        const rank = getRank(totalTime, leaderboardData);
         setRankInfo(rank);
       });
     }
-  }, [totalTime, gameStats.totalQuestions]);
+  }, [totalTime]);
 
   const handlePlayAgain = () => {
     resetGame();
@@ -319,6 +323,7 @@ export default function ResultPage() {
             <Leaderboard 
               currentPlayerTime={totalTime} 
               highlightName={playerName}
+              highlightRunId={gameStats.runId}
             />
           </motion.div>
         </div>

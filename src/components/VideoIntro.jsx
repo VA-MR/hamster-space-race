@@ -5,16 +5,18 @@ export default function VideoIntro({ onComplete, startMuted = true }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(startMuted);
+  const [loadProgress, setLoadProgress] = useState(0);
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // If video fails to load or play within 5 seconds, skip intro
+    // If video fails to load or play within 8 seconds on mobile, skip intro
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const timeout = setTimeout(() => {
       if (isLoading) {
         console.warn('Video taking too long to load, skipping intro');
         onComplete();
       }
-    }, 5000);
+    }, isMobile ? 8000 : 10000);
 
     return () => clearTimeout(timeout);
   }, [isLoading, onComplete]);
@@ -32,15 +34,35 @@ export default function VideoIntro({ onComplete, startMuted = true }) {
 
   const handleLoadedData = () => {
     setIsLoading(false);
+    setLoadProgress(100);
     // Ensure video plays (especially important for Safari)
     if (videoRef.current) {
       // Set muted state before playing
       videoRef.current.muted = startMuted;
-      videoRef.current.play().catch(err => {
-        console.error('Video autoplay failed:', err);
-        setHasError(true);
-        setTimeout(onComplete, 1000);
-      });
+      
+      // Try to play - iOS/mobile may still block
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn('Video autoplay blocked:', err.message);
+          // Don't treat as error on mobile - user can manually start
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          if (!isMobile) {
+            setHasError(true);
+            setTimeout(onComplete, 1000);
+          }
+        });
+      }
+    }
+  };
+
+  const handleProgress = () => {
+    if (videoRef.current && videoRef.current.buffered.length > 0) {
+      const buffered = videoRef.current.buffered.end(0);
+      const duration = videoRef.current.duration;
+      if (duration > 0) {
+        setLoadProgress((buffered / duration) * 100);
+      }
     }
   };
 
@@ -60,7 +82,7 @@ export default function VideoIntro({ onComplete, startMuted = true }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="text-center">
+          <div className="text-center px-4">
             <motion.div
               className="text-6xl mb-4"
               animate={{ rotate: 360 }}
@@ -68,7 +90,18 @@ export default function VideoIntro({ onComplete, startMuted = true }) {
             >
               🐹
             </motion.div>
-            <p className="text-white text-lg">Loading adventure...</p>
+            <p className="text-white text-lg mb-3">Loading adventure...</p>
+            {/* Loading progress bar */}
+            {loadProgress > 0 && (
+              <div className="w-64 max-w-full mx-auto h-2 bg-white/20 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${loadProgress}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+            )}
           </div>
         </motion.div>
       )}
@@ -95,10 +128,14 @@ export default function VideoIntro({ onComplete, startMuted = true }) {
         preload="auto"
         onCanPlay={handleCanPlay}
         onLoadedData={handleLoadedData}
+        onProgress={handleProgress}
         onEnded={onComplete}
         onError={handleError}
         className="w-full h-full object-cover"
         style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s' }}
+        // iOS-specific attributes for better compatibility
+        webkit-playsinline="true"
+        x5-playsinline="true"
       >
         <source src="/assets/Video_Generated_With_Funky_Music.mp4" type="video/mp4" />
         {/* Fallback text for browsers that don't support video */}
